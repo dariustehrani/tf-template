@@ -38,7 +38,7 @@ steps:
     
 - task: AzureCLI@2
   inputs:
-    azureSubscription: 'Darius-Azure Internal Consumption(a4ec924c-502f-4820-9549-1bbcce0dbb52)'
+    azureSubscription: '$(azsubscription)'
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: 'az login'
