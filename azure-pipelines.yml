@@ -4,10 +4,9 @@
 # https://aka.ms/yaml
 
 trigger:
-  - master
-  batch: true
-
-
+- master
+ batch: true
+  
 pool:
   vmImage: 'ubuntu-latest'
   
