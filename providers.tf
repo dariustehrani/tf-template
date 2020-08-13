@@ -33,7 +33,7 @@ terraform {
 }
 
 # strange behaviour, needs old style "feature"
-provider "azurerm" {
+/* provider "azurerm" {
   features {}
 }
 

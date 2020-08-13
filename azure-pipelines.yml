@@ -36,21 +36,3 @@ steps:
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'tf-template.terraform.tfstate'
     
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: '$(azsubscription)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az login'
-    useGlobalConfig: true
-
-- task: TerraformCLI@0
-  displayName: 'terraform plan'
-  inputs:
-    command: 'plan'
-    backendType: 'azurerm'
-    backendServiceArm: '$(azsubscription)'
-    backendAzureRmResourceGroupName: 'tf-template'
-    backendAzureRmStorageAccountName: 'tf-template'
-    backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'tf-template.terraform.tfstate'
