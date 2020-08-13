@@ -36,11 +36,11 @@ steps:
     
 - task: TerraformCLI@0
   inputs:
-    command: 'fmt'
-    commandOptions: '-check'
+    command: 'plan'
     backendType: 'azurerm'
     backendServiceArm: '$(azsubscription)'
     backendAzureRmResourceGroupName: 'tf-template'
     backendAzureRmStorageAccountName: 'tf-template'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'tf-template.terraform.tfstate'
+
