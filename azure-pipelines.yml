@@ -15,7 +15,7 @@ steps:
     terraformVersion: '0.13.0'
 
 - task: TerraformCLI@0
-  name: 'terraform init'
+  displayName: 'terraform init'
   inputs:
     command: 'init'
     backendType: 'azurerm'
