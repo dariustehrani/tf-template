@@ -16,6 +16,9 @@ provider "null" {
   version = ">=2.1.0"
 }
 
+/* 
+disabled: using terraform backend config in azure pipelines instead.
+
 terraform {
   backend "azurerm" {
     resource_group_name  = "tf-template"
@@ -24,6 +27,7 @@ terraform {
     key                  = "tf-template.terraform.tfstate"
   }
 }
+*/
 
 /*
 Please maintain the credentials outside your git repository e.g. through environment variables.
