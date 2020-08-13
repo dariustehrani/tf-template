@@ -8,6 +8,8 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
+  demands: Limit -equals DisAbleParallel 
+
   
 steps:
 - task: TerraformInstaller@0
