@@ -26,7 +26,7 @@ steps:
     backendAzureRmKey: 'tf-template.terraform.tfstate'
 
 - task: TerraformCLI@0
-  name: 'terraform validate'
+  displayName: 'terraform validate'
   inputs:
     command: 'validate'
     backendType: 'azurerm'
@@ -45,7 +45,7 @@ steps:
     useGlobalConfig: true
 
 - task: TerraformCLI@0
-  name: 'terraform plan'
+  displayName: 'terraform plan'
   inputs:
     command: 'plan'
     backendType: 'azurerm'
