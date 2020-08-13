@@ -37,6 +37,7 @@ steps:
     backendAzureRmKey: 'tf-template.terraform.tfstate'
 
 - task: AzureCLI@2
+   displayName: 'terraform lint'
   inputs:
     azureSubscription: '$(azsubscription)'
     scriptType: 'bash'
