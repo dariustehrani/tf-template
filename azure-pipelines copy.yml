@@ -2,7 +2,7 @@
 # azure-pipelines.yml
 
 pool:
-  vmImage: 'Ubuntu 16.04'
+  vmImage: 'Ubuntu 18.04'
 
 trigger:
 - master
