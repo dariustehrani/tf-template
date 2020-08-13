@@ -1,0 +1,46 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: '0.13.0'
+
+- task: TerraformCLI@0
+  inputs:
+    command: 'init'
+    backendType: 'azurerm'
+    backendServiceArm: '$(azsubscription)'
+    backendAzureRmResourceGroupName: 'tf-template'
+    backendAzureRmStorageAccountName: 'tf-template'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'tf-template.terraform.tfstate'
+
+- task: TerraformCLI@0
+  inputs:
+    command: 'validate'
+    backendType: 'azurerm'
+    backendServiceArm: '$(azsubscription)'
+    backendAzureRmResourceGroupName: 'tf-template'
+    backendAzureRmStorageAccountName: 'tf-template'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'tf-template.terraform.tfstate'
+    
+- task: TerraformCLI@0
+  inputs:
+    command: 'fmt'
+    commandOptions: '-check'
+    backendType: 'azurerm'
+    backendServiceArm: '$(azsubscription)'
+    backendAzureRmResourceGroupName: 'tf-template'
+    backendAzureRmStorageAccountName: 'tf-template'
+    backendAzureRmContainerName: 'tfstate'
+    backendAzureRmKey: 'tf-template.terraform.tfstate'
