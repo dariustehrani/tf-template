@@ -1,20 +1,35 @@
-provider "azurerm" {
-  version = ">=2.0.0"
-  features {}
+terraform {
 
+  required_providers {
+    azurerm = {
+      source = "hashicorp/azurerm"
+      version = ">=2.23.0"
+    }
+    
+    azuread = {
+      source = "hashicorp/azuread"
+      version = ">=0.11.0"
+    }
+  
+    local = {
+      source = "hashicorp/local"
+      version = ">=1.4.0"
+    }
+  
+    random = {
+      source = "hashicorp/random"
+      version = ">=2.3.0"
+    }
+    
+    null = {
+      source = "hashicorp/null"
+      version = ">=2.1.2"
+    }
+
+  }
+  
 }
 
-provider "local" {
-  version = ">=1.1.0"
-}
-
-provider "random" {
-  version = ">=2.0.0"
-}
-
-provider "null" {
-  version = ">=2.1.0"
-}
 
 /* 
 disabled: using terraform backend config in azure pipelines instead.
