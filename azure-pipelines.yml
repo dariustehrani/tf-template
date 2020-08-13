@@ -8,13 +8,14 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-
+  
 steps:
 - task: TerraformInstaller@0
   inputs:
     terraformVersion: '0.13.0'
 
 - task: TerraformCLI@0
+  name: 'terraform init'
   inputs:
     command: 'init'
     backendType: 'azurerm'
@@ -25,6 +26,7 @@ steps:
     backendAzureRmKey: 'tf-template.terraform.tfstate'
 
 - task: TerraformCLI@0
+  name: 'terraform validate'
   inputs:
     command: 'validate'
     backendType: 'azurerm'
@@ -34,7 +36,16 @@ steps:
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'tf-template.terraform.tfstate'
     
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: 'Darius-Azure Internal Consumption(a4ec924c-502f-4820-9549-1bbcce0dbb52)'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az login'
+    useGlobalConfig: true
+
 - task: TerraformCLI@0
+  name: 'terraform plan'
   inputs:
     command: 'plan'
     backendType: 'azurerm'
@@ -43,4 +54,3 @@ steps:
     backendAzureRmStorageAccountName: 'tf-template'
     backendAzureRmContainerName: 'tfstate'
     backendAzureRmKey: 'tf-template.terraform.tfstate'
-
