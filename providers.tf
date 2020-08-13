@@ -5,30 +5,36 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=2.23.0"
+      version = "=2.23.0"
+      features = {}
     }
 
     azuread = {
       source  = "hashicorp/azuread"
-      version = ">=0.11.0"
+      version = "=0.11.0"
     }
 
     local = {
       source  = "hashicorp/local"
-      version = ">=1.4.0"
+      version = "=1.4.0"
     }
 
     random = {
       source  = "hashicorp/random"
-      version = ">=2.3.0"
+      version = "=2.3.0"
     }
 
     null = {
       source  = "hashicorp/null"
-      version = ">=2.1.2"
+      version = "=2.1.2"
     }
 
   }
+}
+
+# strange behaviour, needs old style "feature"
+provider "azurerm" {
+  features {}
 }
 
 data "azurerm_client_config" "current" {
