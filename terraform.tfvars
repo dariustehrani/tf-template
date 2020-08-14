@@ -1,4 +1,4 @@
-prefix              = "tf-template"
+prefix              = "myplatform"
 location            = "westeurope"
 resource_group_name = "tf-template"
 
