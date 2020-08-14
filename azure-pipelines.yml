@@ -21,9 +21,9 @@ steps:
     backendType: 'azurerm'
     backendServiceArm: '$(azsubscription)'
     backendAzureRmResourceGroupName: 'tf-template'
-    backendAzureRmStorageAccountName: 'tf-template'
+    backendAzureRmStorageAccountName: 'tftemplate'
     backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'tf-template.terraform.tfstate'
+    backendAzureRmKey: 'tftemplate.terraform.tfstate'
 
 - task: TerraformCLI@0
   displayName: 'terraform validate'
@@ -32,9 +32,9 @@ steps:
     backendType: 'azurerm'
     backendServiceArm: '$(azsubscription)'
     backendAzureRmResourceGroupName: 'tf-template'
-    backendAzureRmStorageAccountName: 'tf-template'
+    backendAzureRmStorageAccountName: 'tftemplate'
     backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'tf-template.terraform.tfstate'
+    backendAzureRmKey: 'tftemplate.terraform.tfstate'
 
 - task: AzureCLI@2
   displayName: 'terraform lint'

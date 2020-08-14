@@ -30,6 +30,13 @@ terraform {
     }
 
   }
+
+  backend "azurerm" {
+    resource_group_name  = "tf-template"
+    storage_account_name = "tftemplate"
+    container_name       = "tfstate"
+    key                  = "tftemplate.terraform.tfstate"
+  }
 }
 
 # strange behaviour, needs old style "feature"
