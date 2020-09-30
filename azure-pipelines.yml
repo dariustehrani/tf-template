@@ -3,9 +3,6 @@ trigger:
   - master
   
 variables:
-  ARM_SUBSCRIPTION_ID: $(azsubscription) 
-  # ARM_TENANT_ID: $(tenant_id)
-  # ARM_CLIENT_ID: $(client_id)
   tfbinaryurl: 'https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip'
 
 pool:
@@ -79,7 +76,6 @@ stages:
         inlineScript: 'terraform plan -out plan.tfplan'
         useGlobalConfig: true
         addSpnToEnvironment: true
-
         
 - stage: Deploy
   jobs:
