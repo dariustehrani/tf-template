@@ -89,7 +89,8 @@ stages:
           terraform plan -out plan.tfplan
         useGlobalConfig: true
         addSpnToEnvironment: true
-        
+  
+
 - stage: TFAPPLY
   jobs:
   - job: 
