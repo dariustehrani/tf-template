@@ -32,7 +32,11 @@ stages:
         azureSubscription: '$(azsubscription)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform init'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform init
         useGlobalConfig: true
         addSpnToEnvironment: true
       
