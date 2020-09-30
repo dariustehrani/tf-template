@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
   
 stages:
-- stage: tf-sanity-check
+- stage: TFCODECHECK
   jobs:
   - job: 
     steps:
@@ -90,7 +90,7 @@ stages:
         useGlobalConfig: true
         addSpnToEnvironment: true
         
-- stage: tf-apply-destroy
+- stage: TFAPPLY
   jobs:
   - job: 
     steps:
