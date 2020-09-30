@@ -1,45 +1,140 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
+name: infra-pipeline
 trigger:
-- master
+  - master
+  
+variables:
+  ARM_SUBSCRIPTION_ID: $(azsubscription) 
+  # ARM_TENANT_ID: $(tenant_id)
+  # ARM_CLIENT_ID: $(client_id)
+  tfbinaryurl: 'https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip'
 
 pool:
   vmImage: 'ubuntu-latest'
   
-steps:
-- task: TerraformInstaller@0
-  inputs:
-    terraformVersion: '0.13.0'
+stages:
+- stage: Build
+  jobs:
+  - job: 
+    steps:
+    - task: AzureCLI@2
+      displayName: 'get terraform'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'wget $(tfbinaryurl) -O terraform.zip && unzip terraform.zip && chmod +x ./terraform && sudo mv ./terraform /usr/local/bin/'
+        useGlobalConfig: true
+        addSpnToEnvironment: true    
+      
+    - task: AzureCLI@2
+      displayName: 'terraform init'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform init'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      
+    - task: AzureCLI@2
+      displayName: 'terraform format check'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform fmt -check'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      
+    - task: AzureCLI@2
+      displayName: 'terraform validate'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform validate'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      
+    - task: AzureCLI@2
+      displayName: 'terraform lint'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'docker run --rm -v $(pwd):/data -t wata727/tflint'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      
+    - task: AzureCLI@2
+      displayName: 'terraform plan'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform plan -out plan.tfplan'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      env:
+      #  ARM_CLIENT_SECRET: $(client_secret)
 
-- task: TerraformCLI@0
-  displayName: 'terraform init'
-  inputs:
-    command: 'init'
-    backendType: 'azurerm'
-    backendServiceArm: '$(azsubscription)'
-    backendAzureRmResourceGroupName: 'tf-template'
-    backendAzureRmStorageAccountName: 'tftemplate'
-    backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'tftemplate.terraform.tfstate'
-
-- task: TerraformCLI@0
-  displayName: 'terraform validate'
-  inputs:
-    command: 'validate'
-    backendType: 'azurerm'
-    backendServiceArm: '$(azsubscription)'
-    backendAzureRmResourceGroupName: 'tf-template'
-    backendAzureRmStorageAccountName: 'tftemplate'
-    backendAzureRmContainerName: 'tfstate'
-    backendAzureRmKey: 'tftemplate.terraform.tfstate'
-
-- task: AzureCLI@2
-  displayName: 'terraform lint'
-  inputs:
-    azureSubscription: '$(azsubscription)'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: 'docker run --rm -v $(pwd):/data -t wata727/tflint'
+        
+- stage: Deploy
+  jobs:
+  - job: 
+    steps:
+    - task: AzureCLI@2
+      displayName: 'get terraform'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'wget $(tfbinaryurl) -O terraform.zip && unzip terraform.zip && chmod +x ./terraform && sudo mv ./terraform /usr/local/bin/'
+        useGlobalConfig: true
+        addSpnToEnvironment: true 
+    
+    - task: AzureCLI@2
+      displayName: 'terraform init'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform init'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+  
+    - task: AzureCLI@2
+      displayName: 'terraform destroy'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform destroy -auto-approve -no-color'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      env:
+      #  ARM_CLIENT_SECRET: $(client_secret)
+    
+    - task: AzureCLI@2
+      displayName: 'terraform plan'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform plan -out plan.tfplan'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      env:
+      #  ARM_CLIENT_SECRET: $(client_secret)
+  
+    - task: AzureCLI@2
+      displayName: 'terraform apply'
+      inputs:
+        azureSubscription: '$(az_service_connection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'terraform apply -auto-approve -no-color plan.tfplan'
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+      env:
+      #  ARM_CLIENT_SECRET: $(client_secret)
