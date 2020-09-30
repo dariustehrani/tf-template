@@ -44,7 +44,11 @@ stages:
         azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform fmt -check'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform fmt -check
         useGlobalConfig: true
         addSpnToEnvironment: true
       
@@ -54,7 +58,11 @@ stages:
         azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform validate'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform validate
         useGlobalConfig: true
         addSpnToEnvironment: true
       
@@ -74,7 +82,11 @@ stages:
         azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform plan -out plan.tfplan'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform plan -out plan.tfplan
         useGlobalConfig: true
         addSpnToEnvironment: true
         
@@ -98,17 +110,11 @@ stages:
         azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform init'
-        useGlobalConfig: true
-        addSpnToEnvironment: true
-  
-    - task: AzureCLI@2
-      displayName: 'terraform destroy'
-      inputs:
-        azureSubscription: '$(azserviceconnection)'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'terraform destroy -auto-approve -no-color'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform init
         useGlobalConfig: true
         addSpnToEnvironment: true
 
@@ -118,7 +124,11 @@ stages:
         azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform plan -out plan.tfplan'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform plan -out plan.tfplan
         useGlobalConfig: true
         addSpnToEnvironment: true
 
@@ -128,6 +138,24 @@ stages:
         azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
-        inlineScript: 'terraform apply -auto-approve -no-color plan.tfplan'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform apply -auto-approve -no-color plan.tfplan
+        useGlobalConfig: true
+        addSpnToEnvironment: true
+
+    - task: AzureCLI@2
+      displayName: 'terraform destroy'
+      inputs:
+        azureSubscription: '$(azserviceconnection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          export ARM_CLIENT_ID=$servicePrincipalId
+          export ARM_CLIENT_SECRET=$servicePrincipalKey
+          export ARM_TENANT_ID=$tenantId
+          terraform destroy -auto-approve -no-color
         useGlobalConfig: true
         addSpnToEnvironment: true
