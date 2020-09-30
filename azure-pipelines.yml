@@ -3,7 +3,8 @@ trigger:
   - master
   
 variables:
-  tfbinaryurl: 'https://releases.hashicorp.com/terraform/0.13.3/terraform_0.13.3_linux_amd64.zip'
+  ARM_SUBSCRIPTION_ID: $(azsubscriptionid) 
+  tfbinaryurl: 'https://releases.hashicorp.com/terraform/0.13.4/terraform_0.13.4_linux_amd64.zip'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,7 +17,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'get terraform'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'wget $(tfbinaryurl) -O terraform.zip && unzip terraform.zip && chmod +x ./terraform && sudo mv ./terraform /usr/local/bin/'
@@ -26,7 +27,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform init'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
@@ -40,7 +41,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform format check'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform fmt -check'
@@ -50,7 +51,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform validate'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform validate'
@@ -60,7 +61,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform lint'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'docker run --rm -v $(pwd):/data -t wata727/tflint'
@@ -70,7 +71,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform plan'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform plan -out plan.tfplan'
@@ -84,7 +85,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'get terraform'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'wget $(tfbinaryurl) -O terraform.zip && unzip terraform.zip && chmod +x ./terraform && sudo mv ./terraform /usr/local/bin/'
@@ -94,7 +95,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform init'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform init'
@@ -104,7 +105,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform destroy'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform destroy -auto-approve -no-color'
@@ -114,7 +115,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform plan'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform plan -out plan.tfplan'
@@ -124,7 +125,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'terraform apply'
       inputs:
-        azureSubscription: '$(azsubscription)'
+        azureSubscription: '$(azserviceconnection)'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'terraform apply -auto-approve -no-color plan.tfplan'
