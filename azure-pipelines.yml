@@ -75,8 +75,6 @@ stages:
         inlineScript: 'terraform plan -out plan.tfplan'
         useGlobalConfig: true
         addSpnToEnvironment: true
-      env:
-      #  ARM_CLIENT_SECRET: $(client_secret)
 
         
 - stage: Deploy
@@ -112,9 +110,7 @@ stages:
         inlineScript: 'terraform destroy -auto-approve -no-color'
         useGlobalConfig: true
         addSpnToEnvironment: true
-      env:
-      #  ARM_CLIENT_SECRET: $(client_secret)
-    
+
     - task: AzureCLI@2
       displayName: 'terraform plan'
       inputs:
@@ -124,9 +120,7 @@ stages:
         inlineScript: 'terraform plan -out plan.tfplan'
         useGlobalConfig: true
         addSpnToEnvironment: true
-      env:
-      #  ARM_CLIENT_SECRET: $(client_secret)
-  
+
     - task: AzureCLI@2
       displayName: 'terraform apply'
       inputs:
@@ -136,5 +130,3 @@ stages:
         inlineScript: 'terraform apply -auto-approve -no-color plan.tfplan'
         useGlobalConfig: true
         addSpnToEnvironment: true
-      env:
-      #  ARM_CLIENT_SECRET: $(client_secret)
