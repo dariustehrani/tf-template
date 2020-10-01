@@ -2,7 +2,7 @@
 [![Build Status](https://dev.azure.com/datehran/tf-template/_apis/build/status/dariustehrani.tf-template?branchName=master)](https://dev.azure.com/datehran/tf-template/_build/latest?definitionId=27&branchName=master)
 
 # Pipeline steps
-![terraform code check](docs/tfcodecheck.png){:width="80px"} ![terraform code check](docs/tfapply.png){:width="80px"}
+![terraform code check](docs/tfcodecheck.png)
 
 
 ## Requirements
